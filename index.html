@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoding "Vinho Verde" – An Exploratory Data Analysis of Red Wine Quality</title>
+    <!-- Google Fonts for Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="background-mesh"></div>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1 class="title">Decoding "Vinho Verde"</h1>
+            <p class="subtitle">An Exploratory Data Analysis of Red Wine Quality</p>
+
+            <div class="image-wrapper hero-img-wrapper">
+                <!-- 
+                    IMAGE PLACEHOLDER: HERO IMAGE
+                    Replace the src below with a high-quality, wide image of red wine, vineyards, or an abstract data visualization. 
+                    Suggested size: ~1200px wide.
+                -->
+                <img src="./images/hero.png" alt="Hero representation of Vinho Verde wine" class="placeholder-img"
+                    id="hero-image">
+            </div>
+        </header>
+
+        <!-- Section 1 -->
+        <section class="card slide-up fade-in" id="objective">
+            <h2>1. The Objective</h2>
+            <p>
+                In this project, I explored the physicochemical properties of Portuguese "Vinho Verde" red wine. The
+                goal was to understand which chemical attributes—like alcohol content, acidity, or pH—actually drive the
+                sensory quality scores (rated 0–10) assigned by human experts.
+            </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="card slide-up fade-in" id="inspection">
+            <h2>2. Initial Data Inspection & "The Messy Reality"</h2>
+            <p>Before diving into charts, I had to understand the raw structure. Using <code>df.info()</code> and
+                <code>df.describe()</code>, I identified:
+            </p>
+            <ul class="feature-list">
+                <li><strong>Dataset Size:</strong> 1,599 initial observations.</li>
+                <li><strong>Target Variable:</strong> <code>quality</code> (discrete integers).</li>
+                <li><strong>Missing Values:</strong> <code>df.isnull().sum()</code> confirmed there were no missing
+                    entries, which is rare but great!</li>
+            </ul>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="card slide-up fade-in" id="cleaning">
+            <h2>3. Data Cleaning: Ensuring Integrity</h2>
+            <p>A critical step in any data project is removing duplicates to prevent bias in our correlations.</p>
+            <div class="insight-box">
+                <strong>Observation:</strong> I used <code>df.duplicated()</code> to identify redundant rows and applied
+                <code>df.drop_duplicates(inplace=True)</code> to ensure every data point in my analysis was unique. This
+                is vital for maintaining the statistical validity of the findings.
+            </div>
+            <pre class="code-block"><code># Removing duplicates to maintain integrity
+duplicates = df.duplicated()
+df.drop_duplicates(inplace=True)</code></pre>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="section-group">
+            <h2 class="section-title slide-up fade-in">4. Deep Dive: Key Insights from EDA</h2>
+
+            <!-- Insight A -->
+            <article class="card slide-up fade-in">
+                <h3>A. The Quality Distribution (Imbalance)</h3>
+                <p>Using a count plot (<code>df.quality.value_counts().plot(kind='bar')</code>), I noticed the data is
+                    heavily imbalanced. Most wines fall into categories 5 and 6, while "Excellent" (8) or "Poor" (3)
+                    wines are quite rare.</p>
+                <div class="insight-box highlight">
+                    <strong>Why it matters:</strong> This tells a recruiter that you understand that real-world data
+                    isn't always perfectly distributed.
+                </div>
+
+                <div class="image-wrapper">
+                    <!-- 
+                        IMAGE PLACEHOLDER: BAR PLOT (Quality Distribution)
+                        Replace the src below with the Bar/Count Plot showing the distribution of the 'quality' variable.
+                    -->
+                    <img src="./images/bar.png" alt="Bar plot showing quality scores distribution"
+                        class="placeholder-img">
+                </div>
+            </article>
+
+            <!-- Insight B -->
+            <article class="card slide-up fade-in">
+                <h3>B. The Chemical "DNA" (Correlation Analysis)</h3>
+                <p>I generated a Heatmap to see how variables interact.</p>
+
+                <div class="image-wrapper">
+                    <!-- 
+                        IMAGE PLACEHOLDER: CORRELATION HEATMAP
+                        Replace the src below with the Heatmap plot of the correlation matrix (e.g. from seaborn).
+                    -->
+                    <img src="./images/heatmap.png" alt="Correlation heatmap" class="placeholder-img">
+                </div>
+
+                <ul class="feature-list">
+                    <li><strong>Insight:</strong> I found a strong positive correlation between Alcohol and Quality.
+                    </li>
+                    <li><strong>Insight:</strong> Volatile Acidity showed a negative correlation—confirming the chemical
+                        intuition that higher acetic acid (vinegar taste) leads to lower quality scores.</li>
+                </ul>
+                <div class="insight-box">
+                    <strong>Technical Note:</strong> Using <code>sns.pairplot(df)</code> helped me check for
+                    multicollinearity (when two inputs are too similar), showing a high level of technical maturity.
+                </div>
+                <pre class="code-block"><code># Generating a heatmap to find feature correlations
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+plt.show()</code></pre>
+            </article>
+
+            <!-- Insight C -->
+            <article class="card slide-up fade-in">
+                <h3>C. Alcohol vs. Quality (Box Plots)</h3>
+                <p>To visualize the "Alcohol effect," I used a Categorical Box Plot (<code>sns.catplot</code>).</p>
+
+                <div class="image-wrapper">
+                    <!-- 
+                        IMAGE PLACEHOLDER: BOX PLOT (Alcohol vs Quality)
+                        Replace the src below with the Box Plot comparing Alcohol content across Quality ratings.
+                    -->
+                    <img src="./images/box.png" alt="Box plot of alcohol versus quality" class="placeholder-img">
+                </div>
+
+                <div class="insight-box highlight">
+                    <strong>The Trend:</strong> As the quality score increases, the median alcohol percentage clearly
+                    trends upward. This suggests that "body" and "strength" are key indicators of expert preference.
+                </div>
+            </article>
+
+            <!-- Insight D -->
+            <article class="card slide-up fade-in">
+                <h3>D. The pH vs. Alcohol Relationship</h3>
+                <p>I used a Scatter Plot colored by quality to see if there was a "sweet spot" in the pH/Alcohol ratio.
+                    This multidimensional view helps identify if certain clusters of chemical properties result in
+                    higher-rated wines.</p>
+
+                <div class="image-wrapper">
+                    <!-- 
+                        IMAGE PLACEHOLDER: SCATTER PLOT (pH vs Alcohol)
+                        Replace the src below with the Scatter Plot comparing pH vs Alcohol content, hue=quality.
+                    -->
+                    <img src="./images/scatter.png" alt="Scatter plot of pH and alcohol by quality"
+                        class="placeholder-img">
+                </div>
+            </article>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="card slide-up fade-in conclusion" id="conclusion">
+            <h2>5. Conclusion</h2>
+            <p>
+                Through this EDA, I've concluded that while wine quality is subjective, it is heavily influenced by
+                specific chemical markers. Alcohol content and Sulphates appear to be the strongest positive drivers,
+                while Volatile Acidity acts as a primary detractor.
+            </p>
+            <p class="final-statement">
+                <strong>This analysis serves as a foundation for feature selection in a future classification model to
+                    predict wine quality automatically.</strong>
+            </p>
+        </section>
+    </main>
+
+    <!-- Script for scroll animations -->
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide-up, .fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
