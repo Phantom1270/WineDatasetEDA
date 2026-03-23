@@ -4,10 +4,7 @@ A visual, interactive blog exploring what makes a great red wine — built from 
 
 This project analyses the physicochemical properties of Portuguese **Vinho Verde** red wine using Exploratory Data Analysis (EDA) to uncover which chemical attributes — alcohol, acidity, pH, sulphates — drive the quality scores assigned by human experts.
 
-**[🔗 Live Demo](#)** ← _Replace `#` with your hosted URL_
-
----
-
+**[🔗 Live Demo](https://phantom1270.github.io/WineDatasetEDA/)**
 ## What's Inside
 
 - Quality score distribution across 1,599 wine samples
